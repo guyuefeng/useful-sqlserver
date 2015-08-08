@@ -1,0 +1,20 @@
+1 ALTER PROCEDURE [dbo].[proc_tb_leaveword_delete]
+  2 ( 
+  3     @leavewordID INT,
+  4     @record TINYINT OUTPUT
+  5 )    
+  6 AS
+  7 BEGIN
+  8     BEGIN TRY
+  9         BEGIN TRANSACTION
+ 10             DELETE FROM tb_leavewordID WHERE leavewordID=@leavewordID
+ 11             DELETE FROM tb_reply WHERE leavewordID=@leavewordID
+ 12             SET @record=0 --³É¹¦
+ 13             COMMIT TRANSACTION
+ 14     END TRY
+ 15     BEGIN CATCH
+ 16         ROLLBACK TRANSACTION
+ 17         SET @record=-1 --Ê§°Ü
+ 18     END CATCH
+ 19     RETURN @record
+ 20 END

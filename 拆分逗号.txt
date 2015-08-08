@@ -1,0 +1,11 @@
+1 DECLARE @A VARCHAR(5000)
+  2 DECLARE @i INT
+  3 SET @A='A,B,C,D,D,S,X,C,C,C,D,AAAA,DDDDDD,DEF,ERT,'
+  4 SET @i=CHARINDEX(',',@A)
+  5 
+  6 WHILE @i>=1
+  7 BEGIN
+  8     PRINT LEFT(@A,@i-1)
+  9     SET @A=SUBSTRING(@A,@i+1,LEN(@A)-1)
+ 10     SET @i=CHARINDEX(',',@A)
+ 11 END

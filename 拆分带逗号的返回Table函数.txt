@@ -1,0 +1,36 @@
+
+ALTER FUNCTION [dbo].[dnt_split]
+(
+ @splitstring NVARCHAR(4000),
+ @separator CHAR(1) = ','
+)
+RETURNS @splitstringstable TABLE
+(
+ [item] NVARCHAR(200)
+)
+AS
+BEGIN
+    DECLARE @currentindex INT
+    DECLARE @nextindex INT
+    DECLARE @returntext NVARCHAR(200)
+
+    SELECT @currentindex=1
+
+    WHILE(@currentindex<=datalength(@splitstring)/2)
+    BEGIN
+        SELECT @nextindex=charindex(@separator,@splitstring,@currentindex)
+        IF(@nextindex=0 OR @nextindex IS NULL)
+            SELECT @nextindex=datalength(@splitstring)/2+1
+        
+        SELECT @returntext=substring(@splitstring,@currentindex,@nextindex-@currentindex)
+
+        INSERT INTO @splitstringstable([item])
+        VALUES(@returntext)
+        
+        SELECT @currentindex=@nextindex+1
+    END
+    RETURN
+END
+
+
+	DELETE [dnt_myinvite] WHERE [id]IN(SELECT [item] FROM [dnt_split](@idlist, ','))

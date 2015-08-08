@@ -1,0 +1,5 @@
+需要修改大量数据库中信息的时候替换显然是件好办法
+update 表名 set 字段 = replace(convert(类型,gl_title),'要替换的字符','替换之后的字符') where 条件
+例如：
+update mytext set title = replace(convert(nvarchar(50),title),'sunyjie','yjiesun') where cno=3
+其中替换的最大字符不能超过8000，即：nvarchar(50),必须小于8000，不然会出现错误

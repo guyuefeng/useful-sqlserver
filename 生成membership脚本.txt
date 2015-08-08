@@ -1,0 +1,2 @@
+所以总想有自己的创建脚本，最后找到了如下的方法。
+aspnet_regsql.exe -E -S localhost -d Northwind -A all -sqlexportonly c:\membership.sql

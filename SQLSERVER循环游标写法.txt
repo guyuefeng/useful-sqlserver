@@ -1,0 +1,18 @@
+	DECLARE @tagid int
+	DECLARE [tag_cursor] CURSOR FOR	
+	SELECT DISTINCT [tagid] FROM [dnt_topictags]
+	OPEN [tag_cursor]
+	FETCH NEXT FROM [tag_cursor] INTO @tagid
+	WHILE @@FETCH_STATUS = 0
+		BEGIN
+			INSERT INTO [dnt_topictagcaches] 
+			SELECT [t1].[tid],[t2].[tid],[t2].[title] FROM (SELECT [tid] FROM [dnt_topictags]
+				WHERE [tagid] = @tagid) AS [t1],(SELECT [t].[tid],[t].[title] FROM [dnt_topics] AS [t],[dnt_topictags] AS [tt] 
+				WHERE [tt].[tagid] = @tagid AND [t].[tid] = [tt].[tid] AND [t].[displayorder] >=0) AS [t2] 
+			WHERE [t1].[tid] <> [t2].[tid] AND NOT EXISTS (SELECT 1 FROM [dnt_topictagcaches] WHERE [tid]=[t1].[tid] AND [linktid]=[t2].[tid])
+			
+
+			FETCH NEXT FROM [tag_cursor] INTO @tagid
+		END
+	CLOSE [tag_cursor]
+	DEALLOCATE [tag_cursor]

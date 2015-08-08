@@ -1,0 +1,2 @@
+上午写模糊匹配。 like '%@ssss%' 出来没结果。后来查了下。发现改成这样。    
+ select * where Remark like +'%'+@Remark+'%'  

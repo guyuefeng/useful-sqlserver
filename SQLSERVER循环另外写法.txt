@@ -1,0 +1,22 @@
+ALTER PROCEDURE [dbo].[dnt_updatepostposter]
+@poster NVARCHAR(20),
+@posterid INT
+AS
+DECLARE @count INT,
+		@begin INT,
+		@tableid INT
+SET @begin = 1
+DECLARE @tempposttable TABLE 
+						(
+							[ROWID] INT IDENTITY(1,1),
+							[tableid] INT
+						)
+INSERT INTO @tempposttable 
+SELECT id FROM dnt_tablelist
+SELECT @count=COUNT(1) FROM @tempposttable
+WHILE @begin <= @count
+BEGIN
+	SELECT  @tableid = [tableid] FROM @tempposttable WHERE [ROWID] = @begin
+	EXEC('UPDATE [dnt_posts' + @tableid + '] SET [poster]=''' + @poster + ''' WHERE [posterid]=' + @posterid )
+	SET @begin = @begin + 1
+END

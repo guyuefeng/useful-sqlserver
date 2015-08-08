@@ -1,0 +1,29 @@
+1 ALTER PROCEDURE [dbo].[proc_tb_news_type_selects_delete]
+  2 ( 
+  3     @typeID_list VARCHAR(500),
+  4     @record TINYINT OUTPUT
+  5 )
+  6 AS
+  7 BEGIN
+  8     BEGIN TRY
+  9             BEGIN TRANSACTION
+ 10                 DECLARE @index INT
+ 11                 DECLARE @typeID INT
+ 12                 SET @typeID_list=RTRIM(LTRIM(@typeID_list))
+ 13                 SET @index=CHARINDEX(',',@typeID_list)
+ 14                 WHILE @index>=1
+ 15                     BEGIN
+ 16                         SET @typeID=CAST(LEFT(@typeID_list,@index-1) AS INT)
+ 17                         EXECUTE proc_tb_news_type_delete @typeID=@typeID
+ 18                         SET @typeID_list=SUBSTRING(@typeID_list,@index+1,LEN(@typeID_list)-1)
+ 19                         SET @index=CHARINDEX(',',@typeID_list)
+ 20                     END
+ 21             COMMIT TRANSACTION
+ 22             SET @record=0 --³É¹¦
+ 23     END TRY
+ 24     BEGIN CATCH
+ 25         ROLLBACK TRANSACTION
+ 26         SET @record=-1 --Ê§°Ü
+ 27     END CATCH
+ 28     RETURN @record
+ 29 END

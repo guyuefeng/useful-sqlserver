@@ -1,0 +1,10 @@
+SET DATEFIRST 1
+DECLARE @day1 DATETIME
+DECLARE @dat5temp DATETIME
+DECLARE @day5 VARCHAR(100)
+SET @day1 = convert(char(10),dateadd(dd, - DATEPART (weekday , getdate())-6,getdate()),120)
+SET @dat5temp = convert(char(10),dateadd(dd, - DATEPART (weekday , getdate())-2,getdate()),120)
+SET @day5 = CAST(YEAR(@dat5temp) AS VARCHAR(4)) + '-' + CAST(MONTH(@dat5temp) AS VARCHAR(2)) + '-' + CAST(DAY(@dat5temp) AS VARCHAR(2)) + ' 23:59:59'
+PRINT @dat5temp
+PRINT @day5
+SELECT * FROM dbo.News WHERE PublishDate BETWEEN @day1 AND @day5

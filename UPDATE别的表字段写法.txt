@@ -1,0 +1,6 @@
+UPDATE dnt_users
+SET [digestposts] = leftTable.topiccount 
+FROM dnt_users 
+INNER JOIN (SELECT COUNT(tid) topiccount,posterid FROM dnt_topics WHERE [digest] > 0 GROUP BY posterid) AS leftTable
+ON dnt_users.[uid] = leftTable.posterid
+WHERE dnt_users.[uid] = leftTable.posterid AND dnt_users.posts <> 0

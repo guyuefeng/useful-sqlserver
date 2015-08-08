@@ -1,0 +1,117 @@
+--查询当天：    
+select * from info where DateDiff(dd,datetime,getdate())=0    
+   
+--查询24小时内的:    
+select * from info where DateDiff(hh,datetime,getDate())<=24    
+   
+--info为表名,datetime为数据库中的字段值   
+--查询当天：
+select * from info where DateDiff(dd,datetime,getdate())=0
+--查询24小时内的:
+select * from info where DateDiff(hh,datetime,getDate())<=24
+--info为表名,datetime为数据库中的字段值
+Sql代码 Powered by chenjiazi
+--查询当天记录另类的方法    
+SELECT *    
+FROM j_GradeShop    
+WHERE (GAddTime BETWEEN CONVERT(datetime, LEFT(GETDATE(), 10) + ' 00:00:00.000')    
+      AND CONVERT(datetime, LEFT(GETDATE(), 10) + ' 00:00:00.000') + 1)    
+ORDER BY GAddTime DESC    
+--查询当天记录另类的方法
+SELECT *
+FROM j_GradeShop
+WHERE (GAddTime BETWEEN CONVERT(datetime, LEFT(GETDATE(), 10) + ' 00:00:00.000') 
+      AND CONVERT(datetime, LEFT(GETDATE(), 10) + ' 00:00:00.000') + 1)
+ORDER BY GAddTime DESC
+DATEDIFF 函数:
+语法:
+
+DATEDIFF ( datepart , startdate , enddate )
+
+备注:enddate 减去 startdate。如果 startdate 晚于 enddate，则返回负值。
+如果结果超出整数值范围，则 DATEDIFF 将产生错误。对于毫秒，最大数是 24 天 20 小时 31 分钟零 23.647 秒。对于秒，最大数是 68 年。
+跨分钟、秒和毫秒等边界计算的方法使得 DATEDIFF 指定的结果在所有数据类型中均一致。结果是带正负号的整数值，它等于跨第一个和第二个日期间的 datepart 边界数。例如，在 1 月 4 日（星期日）和 1 月 11 日（星期日）之间的星期数是 1。
+
+可以再MSSQL中测试:
+Sql代码
+--两个时间差刚好是24    
+--打印的方式    
+print dateDiff(hh,'2009-1-1 0:0:0','2009-1-2 0:0:0')    
+   
+--查询的方式    
+print dateDiff(hh,'2009-1-1 0:0:0','2009-1-2 0:0:0')   
+--两个时间差刚好是24
+--打印的方式
+print dateDiff(hh,'2009-1-1 0:0:0','2009-1-2 0:0:0')
+--查询的方式
+print dateDiff(hh,'2009-1-1 0:0:0','2009-1-2 0:0:0')
+Sql代码
+--本月记录    
+SELECT * FROM 表 WHERE datediff(month,[dateadd],getdate())=0    
+   
+--本周记录    
+SELECT * FROM 表 WHERE datediff(week,[dateadd],getdate())=0    
+   
+--包括本年这些查询方式是一样的    
+    
+--本月记录 
+SELECT * FROM 表 WHERE datediff(month,[dateadd],getdate())=0
+
+--本周记录 
+SELECT * FROM 表 WHERE datediff(week,[dateadd],getdate())=0
+--包括本年这些查询方式是一样的
+sql server中的时间函数 
+
+1.   当前系统日期、时间 
+     select getdate() 
+
+2. dateadd   在向指定日期加上一段时间的基础上，返回新的 datetime 值
+    例如：向日期加上2天 
+    select dateadd(day,2,'2004-10-15')   --返回：2004-10-17 00:00:00.000
+
+3. datediff 返回跨两个指定日期的日期和时间边界数。
+    select datediff(day,'2004-09-01','2004-09-18')    --返回：17
+
+4. datepart 返回代表指定日期的指定日期部分的整数。
+   SELECT DATEPART(month, '2004-10-15')   --返回 10
+
+5. datename 返回代表指定日期的指定日期部分的字符串
+    SELECT datename(weekday, '2004-10-15')   --返回：星期五
+
+6. day(), month(),year() --可以与datepart对照一下
+select 当前日期=convert(varchar(10),getdate(),120) 
+,当前时间=convert(varchar(8),getdate(),114)
+select datename(dw,'2004-10-15')
+select 本年第多少周=datename(week,'2004-10-15')
+       ,今天是周几=datename(weekday,'2004-10-15')
+
+函数 参数/功能 
+GetDate( ) 返回系统目前的日期与时间 
+DateDiff (interval,date1,date2) 以interval 指定的方式，返回date2 与date1两个日期之间的差值 date2-date1 
+DateAdd (interval,number,date) 以interval指定的方式，加上number之后的日期 
+DatePart (interval,date) 返回日期date中，interval指定部分所对应的整数值 
+DateName (interval,date) 返回日期date中，interval指定部分所对应的字符串名称 
+参数 interval的设定值如下：
+
+值 缩 写（Sql Server） Access 和 ASP 说明 
+Year Yy yyyy 年 1753 ~ 9999 
+Quarter Qq q   季 1 ~ 4 
+Month Mm m   月1 ~ 12 
+Day of year Dy y 一年的日数,一年中的第几日 1-366 
+Day Dd d   日，1-31 
+Weekday Dw w 一周的日数，一周中的第几日 1-7 
+Week Wk ww 周，一年中的第几周 0 ~ 51 
+Hour Hh h   时0 ~ 23 
+Minute Mi n 分钟0 ~ 59 
+Second Ss s 秒 0 ~ 59 
+Millisecond Ms - 毫秒 0 ~ 999 
+access 和 asp 中用date()和now()取得系统日期时间；其中DateDiff,DateAdd,DatePart也同是能用于Access和asp中，这些函数的用法也类似
+
+举例：
+1.GetDate() 用于sql server :select GetDate()
+2.DateDiff('s','2005-07-20','2005-7-25 22:56:32')返回值为 514592 秒
+DateDiff('d','2005-07-20','2005-7-25 22:56:32')返回值为 5 天
+3.DatePart('w','2005-7-25 22:56:32')返回值为 2 即星期一(周日为1，周六为7)
+DatePart('d','2005-7-25 22:56:32')返回值为 25即25号
+DatePart('y','2005-7-25 22:56:32')返回值为 206即这一年中第206天
+DatePart('yyyy','2005-7-25 22:56:32')返回值为 2005即2005年

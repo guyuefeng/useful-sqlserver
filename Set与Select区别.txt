@@ -1,0 +1,24 @@
+set 
+select
+同时对多个变量同时赋值 
+不支持 
+支持
+表达式返回多个值时 
+出错 
+将返回的最后一个值赋给变量
+表达式未返回值 
+变量被赋null值 
+变量保持原值
+下面以具体示例来说明问题： 
+create table chinadba1( 
+userid int , 
+addr varchar(128)  
+) 
+go 
+insert into chinadba1(userid,addr) values(1,'addr1') 
+insert into chinadba1(userid,addr) values(2,'addr2') 
+insert into chinadba1(userid,addr) values(3,'addr3') 
+go 
+表达式返回多个值时，使用 SET 赋值  
+declare @addr varchar(128) 
+set @addr = (select addr from chinadba1) 
